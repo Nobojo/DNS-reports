@@ -1,0 +1,21 @@
+name: Daily DNS report
+
+on:
+  schedule:
+    - cron: "0 13 * * *"
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python nextdns_daily_report.py
+        env:
+          NEXTDNS_API_KEY: ${{ secrets.NEXTDNS_API_KEY }}
+          NEXTDNS_PROFILE_ID: ${{ secrets.NEXTDNS_PROFILE_ID }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
